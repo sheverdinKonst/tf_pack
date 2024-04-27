@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+		
+		<COMMAND name="config stp"
+             help="Configure Spanning Tree">
+		</COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp state"
+                 help="Enable/Disable STP/RSTP">
+            <PARAM name="stateValue"
+                   help="set enable or disable state"
+                   ptype="STATE"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "state" "${stateValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp log_level"
+                 help="set log level">
+            <PARAM name="logValue"
+                   help="choose log level: disable, error, info, debug, state machine transition"
+                   ptype="STP_LOG_LEVEL"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "loglevel" "${logValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp priority"
+                 help="Configure Spanning Tree">
+            <PARAM name="priorityValue"
+                   help="priority Value chose from list"
+                   ptype="STP_PRIORITY"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "priority" "${priorityValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp protocol"
+                 help="Choose stp version: STP, RSTP, MSTP">
+            <PARAM name="protocolValue"
+                   help="STP, RSTP, MSTP"
+                   ptype="STP_PROTOCOL"/>
+            <ACTION>
+                    /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "protocol" "${protocolValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp ageing"
+                 help="Configure Spanning Tree">
+            <PARAM name="ageingValue"
+                   help="forward BPDU Value"
+                   ptype="NUM_10-1M"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "ageing" "${ageingValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp hello_time"
+                 help="Configure Spanning Tree">
+            <PARAM name="hellotimeValue"
+                   help="hello time Value 1-10"
+                   ptype="NUM_1_10"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "hellotime" "${hellotimeValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp forward_delay"
+                 help="Configure Spanning Tree">
+            <PARAM name="forwarddelayValue"
+                   help="forward delay Value 4-30"
+                   ptype="NUM_4-30"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "forwarddelay" "${forwarddelayValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp max_age"
+                 help="Configure Spanning Tree">
+            <PARAM name="maxageValue"
+                   help="max age Value 10-1M"
+                   ptype="NUM_6-40"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "maxage" "${maxageValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp tx_hold_count"
+                 help="Configure Spanning Tree">
+            <PARAM name="txholdcounteValue"
+                   help="tx hold count Value 1-10"
+                   ptype="NUM_1_10"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "txholdcount" "${txholdcounteValue}"
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+        <COMMAND name="config stp ports"
+                 help="Configure Spanning Tree">
+            <PARAM name="portList"
+                   help="set port list"
+                   ptype="PORT_NUM_LIST"/>
+
+            <PARAM name="priority"
+                   help="set stp/rstp priority"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="p_treeprioValue"
+                       help="priority Value chose from list"
+                       ptype="STP_PRIORITY"/>
+            </PARAM>
+
+            <PARAM name="path_cost"
+                   test='-z "${priority}"'
+                   help="set path cost"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="p_pathcostValue"
+                       help="set path cost 1 - 200.000.000"
+                       ptype="UINT"/>
+            </PARAM>
+
+            <PARAM name="admin_edge"
+                   test='-z "${priority}" -a -z "${path_cost}"'
+                   help="set admin edge "
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="p_adminageValue"
+                       help="set admin edge: yes, no"
+                       ptype="STP_BOOL"/>
+            </PARAM>
+
+            <PARAM name="autoe_dge"
+                   test='-z "${priority}" -a -z "${path_cost}" -a -z "${admin_edge}"'
+                   help="set auto edge"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="p_autoedgeValue"
+                       help="set auto edge: yes, no"
+                       ptype="STP_BOOL"/>
+            </PARAM>
+
+            <PARAM name="bpdu_filter"
+                   test='-z "${priority}" -a -z "${path_cost}" -a -z "${admin_edge}" -a -z "${autoe_dge}"'
+                   help="set BPDU filter"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="p_bpdufilterValue"
+                       help="set BPDU filter: yes, no"
+                       ptype="STP_BOOL"/>
+            </PARAM>
+
+            <PARAM name="bpdu_guard"
+                   test='-z "${priority}" -a -z "${path_cost}" -a -z "${admin_edge}" -a -z "${autoe_dge}" -a -z "${bpdu_filter}"'
+                   help="set BPDU guard"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="p_bpduguardValue"
+                       help="set BPDU guard: yes, no"
+                       ptype="STP_BOOL"/>
+            </PARAM>
+            <ACTION>
+                if [[ -n "${priority}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/stp/config_stp_port.lua  "${portList}" "treeprio" "${p_treeprioValue}"
+                fi
+
+                if [[ -n "${path_cost}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/stp/config_stp_port.lua  "${portList}" "pathcost" "${p_pathcostValue}"
+                fi
+
+                if [[ -n "${admin_edge}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/stp/config_stp_port.lua  "${portList}" "adminedge" "${p_adminageValue}"
+                fi
+
+                if [[ -n "${auto_edge}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/stp/config_stp_port.lua  "${portList}" "autoedge" "${p_autoedgeValue}"
+                fi
+
+                if [[ -n "${bpdu_filter}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/stp/config_stp_port.lua  "${portList}" "bpdufilter" "${p_bpdufilterValue}"
+                fi
+
+                if [[ -n "${bpdu_guard}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/stp/config_stp_port.lua  "${portList}" "bpduguar" "${p_bpduguardValue}"
+                fi
+            </ACTION>
+        </COMMAND>
+        <!--=======================================================-->
+
+        <!--=============================
+       <COMMAND name="config stp forward_bpdu"
+                help="Configure Spanning Tree">
+           <PARAM name="forward_bpduValue"
+                  help="forward BPDU Value"
+                  ptype="UINT"/>
+           <ACTION>
+               /etc/tfortis_klish/scripts/lua/stp/config_stp_global.lua "forward_bpdu" "${forward_bpduValue}"
+           </ACTION>
+       </COMMAND>
+       ==========================-->
+	</VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

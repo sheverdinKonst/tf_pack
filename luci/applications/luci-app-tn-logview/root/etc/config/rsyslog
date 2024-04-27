@@ -1,0 +1,16 @@
+config syslog 'syslog'
+	option tcp_input_port '514'
+	option udp_input '1'
+	option tcp_input '0'
+	option udp_input_port '514'
+	option default_template 'myTemplate'
+	list modules 'imuxsock'
+	list modules 'imklog'
+
+config selector
+	option source ':programname, startswith, "tfortis", '
+	option destination '-/var/log/switch'
+	
+config selector
+	option source '*'
+	option destination '/var/log/syslog'

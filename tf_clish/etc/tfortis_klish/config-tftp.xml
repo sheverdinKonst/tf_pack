@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config tftp"
+                 help="Configure TFTP">
+
+            <PARAM name="portStart"
+                   optional="false"
+                   help="port start"
+                   ptype="PORT_NUM_LIST"/>
+
+            <PARAM name="state"
+                   help="set Port state"
+                   optional="false"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="stateValue"
+                       help="state value"
+                       ptype="STATE"/>
+            </PARAM>
+
+            <ACTION>
+                echo "************************** SUMMARY CONFIG TFTP **********************"
+                echo "port Start:           "${portStart}
+                echo "State value:          "${stateValue}
+            </ACTION>
+        </COMMAND>
+
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

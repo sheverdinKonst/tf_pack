@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+		<COMMAND name="show network"
+				 help="Show ports information">
+			<ACTION>
+				uci show network
+			</ACTION>
+		</COMMAND>
+		<COMMAND name="show packet"
+             help="Show packet information">
+		</COMMAND>
+		<COMMAND name="show fdb"
+             help="Show FDB">
+		</COMMAND>
+		<COMMAND name="show carpentry"
+             help="Show ARP table">
+		</COMMAND>
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

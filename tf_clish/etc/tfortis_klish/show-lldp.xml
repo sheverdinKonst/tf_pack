@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+		
+		<COMMAND name="show lldp"
+             help="Show lldp">
+
+            <PARAM name="local"
+                   help="show lldp local port"
+                   optional="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+            </PARAM>
+
+            <PARAM name="remote"
+                   test='-z "${local}"'
+                   help="show lldp remote port"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="ports"
+                       help="choose port range"
+                       optional="true"
+                       order="true"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND"/>
+                <PARAM name="portValue"
+                       test = '-n "${ports}"'
+                       optional="true"
+                       order="true"
+                       help="sport value - range: 1-10 or only one: 2"
+                       ptype="PORT_NUM_LIST"/>
+            </PARAM>
+
+            <PARAM name="statistics"
+                   test='-z "${local}" -a -z "${remote}"'
+                   help="show lldp advanced statistics"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="ports"
+                       help="choose port range"
+                       optional="true"
+                       order="true"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND"/>
+                <PARAM name="portValue"
+                       test = '-n "${ports}"'
+                       optional="false"
+                       order="true"
+                       help="sport value - range: 1-10 or only one: 2"
+                       ptype="PORT_NUM_LIST"/>
+            </PARAM>
+
+            <PARAM name="interfaces"
+                   test='-z "${local}" -a -z "${remote}" -a -z "${statistics}"'
+                   help="show lldp interfaces"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="ports"
+                       help="       choose port range"
+                       optional="true"
+                       order="true"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND"/>
+                <PARAM name="portValue"
+                       test = '-n "${ports}"'
+                       optional="false"
+                       order="true"
+                       help="sport value - range: 1-10 or only one: 2"
+                       ptype="PORT_NUM_LIST"/>
+            </PARAM>
+
+            <ACTION>
+                if [[  -n "${local}" ]]; then
+                    etc/tfortis_klish/scripts/lua/lldpd/show_lldpd.lua "all" ${local}
+                fi
+
+                if [[  -n "${remote}" ]]; then
+                    if [[  -z "${portValue}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/lldpd/show_lldpd.lua "all" ${remote}
+                    fi
+
+                    if [[  -n "${portValue}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/lldpd/show_lldpd.lua ${portValue} ${remote}
+                    fi
+                fi
+
+                if [[  -n "${statistics}" ]]; then
+                    if [[  -z "${portValue}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/lldpd/show_lldpd.lua "all" ${statistics}
+                    fi
+
+                    if [[  -n "${portValue}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/lldpd/show_lldpd.lua ${portValue} ${statistics}
+                    fi
+                fi
+
+                if [[  -n "${interfaces}" ]]; then
+                    if [[  -z "${portValue}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/lldpd/show_lldpd.lua "all" ${interfaces}
+                    fi
+
+                    if [[  -n "${portValue}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/lldpd/show_lldpd.lua ${portValue} ${interfaces}
+                    fi
+                fi
+            </ACTION>
+		</COMMAND>
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

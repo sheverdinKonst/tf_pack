@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+		
+		<COMMAND name="show vlan"
+             help="Show vlan">
+        </COMMAND>
+
+        <COMMAND name="show vlan all"
+                 help="Show vlan">
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/vlan/show_vlan.lua 0
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="show vlan id:"
+                 help="Show vlan">
+            <PARAM
+                 name="vlanIdValue"
+                 help="Show specified vlan"
+                 ptype="VLAN_ID"/>
+
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/vlan/show_vlan.lua ${vlanIdValue}
+            </ACTION>
+        </COMMAND>
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

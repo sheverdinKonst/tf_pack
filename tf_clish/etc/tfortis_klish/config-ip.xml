@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--  =======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config ipif"
+             help="Configure IP interfaces"
+             lock="false"
+             interrupt="false">
+
+            <PARAM name="ifname"
+                   help="Interface name"
+                   ptype="IFNAME">
+            </PARAM>
+
+            <PARAM name="proto"
+                   help="Protocol to use for the ping"
+                   optional="false"
+                   mode="switch"
+                   ptype="SUBCOMMAND">
+                <PARAM name="static"
+                       help="Set proto static : IP, netmask, gateway, dns"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND">
+                    <PARAM name="ipaddress"
+                           help="set ip address"
+                           optional="true"
+                           order="true"
+                           mode="subcommand"
+                           ptype="SUBCOMMAND">
+                        <PARAM name="IP"
+                               help="IP address"
+                               ptype="IP_ADDR"/>
+                    </PARAM>
+
+                    <PARAM name="netmask"
+                           help="netmask"
+                           optional="true"
+                           order="true"
+                           mode="subcommand"
+                           ptype="SUBCOMMAND">
+                        <PARAM name="netmaskIP"
+                               help="netmask address"
+                               ptype="IP_ADDR"/>
+                    </PARAM>
+
+                    <PARAM name="gateway"
+                           help="gateway"
+                           order="true"
+                           optional="true"
+                           mode="subcommand"
+                           ptype="SUBCOMMAND">
+                        <PARAM name="gatewayIP"
+                               help="gateway address"
+                               ptype="IP_ADDR"/>
+                    </PARAM>
+
+                    <PARAM name="dns"
+                           help="DNS"
+                           optional="true"
+                           order="true"
+                           mode="subcommand"
+                           ptype="SUBCOMMAND">
+                        <PARAM name="DNSIP"
+                               help="DNS address"
+                               ptype="IP_ADDR"/>
+                    </PARAM>
+
+                </PARAM>
+
+                <PARAM name="dhcp"
+                       help="Set proto dhcp"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND"/>
+            </PARAM>
+
+            <ACTION>
+                /etc/tfortis_klish/scripts/ipif/set_ipif.sh ${ifname} ${proto} ${IP} ${netmaskIP} ${gatewayIP} ${DNSIP}
+                if [ $? -eq 0 ]; then
+                    echo "Successes"
+                else
+                    echo "ERROR"
+                fi
+            </ACTION>
+		</COMMAND>
+	</VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

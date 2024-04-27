@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--  =======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config save"
+                 help="Apply new configuration"
+                 lock="false"
+                 interrupt="false">
+            <ACTION>
+                /usr/share/lua/tf_klish/changes/config_changes.lua "savechanges"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config changes"
+                 help="Show changes"
+                 lock="false"
+                 interrupt="false">
+            <ACTION>
+                 /usr/share/lua/tf_klish/changes/config_changes.lua "showchanges"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config revert"
+                help="revert changes for special config"
+                lock="false"
+                interrupt="false">
+            <PARAM name="revertSection"
+                help="The configuration in which to undo the changes. For example: network, mstp, lldp and etc."
+                optional="true"
+                ptype="STRING"/>
+            <ACTION>
+                /usr/share/lua/tf_klish/changes/config_changes.lua "revertsection"
+            </ACTION>
+        </COMMAND>
+
+
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

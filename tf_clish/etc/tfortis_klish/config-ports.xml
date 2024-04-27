@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--  =======================================================-->
+    <VIEW name="main">
+    <!--===================================================-->
+
+        <COMMAND name="config ports"
+                 help="Configure IP interfaces"
+                 lock="false"
+                 interrupt="true">
+
+            <PARAM name="portStart"
+                   optional="false"
+                   help="port start"
+                   ptype="PORT_NUM_LIST"/>
+
+                   <PARAM name="state"
+                          help="set Port state"
+                          optional="true"
+                          mode="subcommand"
+                          ptype="SUBCOMMAND">
+                       <PARAM name="stateValue"
+                              help="state value"
+                              ptype="STATE"/>
+                   </PARAM>
+
+                   <PARAM name="speed"
+                          test='-z "${state}"'
+                          help="set Port speed"
+                          optional="true"
+                          order="true"
+                          mode="subcommand"
+                          ptype="SUBCOMMAND">
+                       <PARAM name="speedValue"
+                              help="speed value"
+                              ptype="PORT_SPEED"/>
+                   </PARAM>
+
+                   <PARAM name="flow_control"
+                          test='-z "${speed}" -a -z "${state}"'
+                          help="set Flow control"
+                          optional="true"
+                          order="true"
+                          mode="subcommand"
+                          ptype="SUBCOMMAND">
+                       <PARAM name="flow_controlValue"
+                              help="flow_control value"
+                              ptype="STATE_DE"/>
+                   </PARAM>
+
+                   <PARAM name="poe"
+                          test='-z "${flow_control}" -a -z "${speed}" -a -z "${state}"'
+                          help="set PoE"
+                          optional="true"
+                          order="true"
+                          mode="subcommand"
+                          ptype="SUBCOMMAND">
+                       <PARAM name="poeValue"
+                              help="PoE value"
+                              ptype="POE_VALUE"/>
+                   </PARAM>
+
+                   <ACTION>
+                       echo "************************** SUMMARY CONFIG PORTS **********************"
+                       echo "port Start:           "${portStart}
+                       echo "port End:             "${portEnd}
+                       echo "State value:          "${stateValue}
+                       echo "Speed value:          "${speedValue}
+                       echo "Flow control value:   "${flow_controlValue}
+                       echo "PoE value:            "${poeValue}
+
+                       if [[  -n "${stateValue}" ]]; then
+                            echo "state"
+                            /etc/tfortis_klish/scripts/port/set_ports_state.sh ${portStart} ${stateValue}
+                       fi
+
+                       if [[  -n "${speedValue}" ]]; then
+                            echo "speed"
+                            /etc/tfortis_klish/scripts/port/set_ports_speed.sh ${portStart} ${speedValue}
+                       fi
+
+                       if [[  -n "${flow_controlValue}" ]]; then
+                            echo "flow"
+                            /etc/tfortis_klish/scripts/port/set_ports_flow.sh ${portStart} ${flow_controlValue}
+                       fi
+
+                       if [[  -n "${poeValue}" ]]; then
+                            echo "poe"
+                            /etc/tfortis_klish/scripts/port/set_ports_poe.sh ${portStart} ${poeValue}
+                       fi
+                   </ACTION>
+               </COMMAND>
+           </VIEW>
+       <!--=======================================================-->
+</CLISH_MODULE>

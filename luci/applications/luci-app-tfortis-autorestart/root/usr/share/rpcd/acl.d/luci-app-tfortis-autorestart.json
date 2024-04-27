@@ -1,0 +1,33 @@
+{
+  "luci-app-tfortis-autorestart": {
+    "description": "Grant UCI access to LuCI app tfortis-autorestart",
+    "read": {
+      "uci": [
+        "port",
+        "luci",
+				"network"
+      ],
+      "ubus": {
+        "uci": [
+          "get"
+        ],
+        "luci": [
+					"getBuiltinEthernetPorts"
+				]
+      },
+	  "file": {
+		  "/usr/bin/tf_poe_restart_ctrl": ["exec"]
+	  }
+	},
+    "write": {
+      "ubus": {
+        "uci": [
+          "set", "commit"
+        ]
+      },
+      "uci": [
+        "port"
+      ]
+    }
+  }
+}

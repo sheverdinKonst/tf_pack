@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+		<COMMAND name="show snmp"
+             help="Show SNMP information">
+		</COMMAND>		
+		
+		<COMMAND name="show syslog"
+             help="Show Syslog information">
+		</COMMAND>		
+			
+		<COMMAND name="show sntp"
+             help="Show SNTP information">
+		</COMMAND>	
+		
+		<COMMAND name="show smtp"
+             help="Show SMTP information">
+		</COMMAND>	
+
+		<COMMAND name="show tftp"
+             help="Show TFTP information">
+		</COMMAND>	
+		
+		<COMMAND name="show events"
+             help="Show Events information">
+		</COMMAND>
+
+		<COMMAND name="show config"
+             help="Show configuration">
+		</COMMAND>		
+		
+		<COMMAND name="show mac_filtering"
+             help="Show MAC filtering">
+		</COMMAND>	
+		
+		<COMMAND name="show mirroring"
+             help="Show mirroring">
+		</COMMAND>	
+		
+		<COMMAND name="show teleport"
+             help="Show teleport">
+		</COMMAND>	
+		
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

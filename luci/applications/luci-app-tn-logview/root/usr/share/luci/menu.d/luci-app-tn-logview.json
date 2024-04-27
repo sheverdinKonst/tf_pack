@@ -1,0 +1,13 @@
+{
+	"admin/statistics/logview": {
+		"title": "Logs",
+		"order": 95,
+		"action": {
+			"type": "view",
+			"path": "status/logview"
+		},
+		"depends": {
+			"acl": [ "luci-app-tn-logview" ]
+		}
+	}
+}

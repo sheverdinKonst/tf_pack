@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+		
+		<COMMAND name="config lldp"
+             help="Configure LLDP">
+		</COMMAND>
+
+        <COMMAND name="config lldp state"
+                 help="enable/disable LLDP + force LLDP">
+
+            <PARAM name="stateValue"
+                   help="LLDP state value: disable/enable"
+                   ptype="STATE"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG LLDP STATE **********************"
+                echo "$lldp stateValue:" "${stateValue}"
+                uci set lldpd.config.enable_lldp="${stateValue}"
+                uci set lldpd.config.force_lldp="${stateValue}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config lldp transmit_interval"
+                 help="The transmit delay is the delay between two transmissions of LLDP PDU. The value in interval 5-120 second(default 30)">
+
+            <PARAM name="tx_interval"
+                   help="LLDP tx interval, the value in range 5-120, default 30"
+                   ptype="LLDP_TX_INTERVAL"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG LLDP TX INTERVAL **********************"
+                echo "$lldp tx_interval:" "${tx_interval}"
+                uci set lldpd.config.lldp_tx_interval="${tx_interval}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config lldp hold_multiplier"
+                 help="This value is used to compute the TTL of transmitted packets which is the product of this value and of the transmit delay. The default value is 4 and therefore the default TTL is 120 seconds">
+
+            <PARAM name="lldp_tx_hold"
+                   help="LLDP tx hold: value in range 2-9"
+                   ptype="LLDP_HOLD_MULTI"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG LLDP TX INTERVAL **********************"
+                echo "$lldp tx_hold:" "${lldp_tx_hold}"
+                uci set lldpd.config.lldp_tx_hold="${lldp_tx_hold}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config lldp ports"
+                 help="Specify which interface to listen and send LLDPDU to. If no interfaces is specified, LLDPd will use all available physical interfaces.">
+
+            <PARAM name="portlist"
+                   optional="false"
+                   help="port start"
+                   ptype="PORT_NUM_LIST"/>
+
+            <PARAM name="state"
+                   help="set Port state"
+                   optional="false"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="stateValue"
+                       help="state value"
+                       ptype="STATE_DE"/>
+            </PARAM>
+
+            <ACTION>
+                echo "************************** SUMMARY CONFIG LLDP PORTS **********************"
+                /etc/tfortis_klish/scripts/lua/lldpd/set_lldp_ports.sh ${portlist} ${stateValue}
+            </ACTION>
+        </COMMAND>
+	</VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

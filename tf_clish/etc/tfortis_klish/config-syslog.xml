@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config syslog"
+                 help="Configure Syslog">
+        </COMMAND>
+
+        <COMMAND name="config syslog state"
+                 help="ON/OFF send syslog message">
+            <PARAM name="stateValue"
+                   help="set syslog state value"
+                   ptype="STATE"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG SYSLOG **********************"
+                echo "state:            "${stateValue}
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config syslog host"
+                 help="IP address syslog server">
+            <PARAM name="ipValue"
+                   help="IP address"
+                   ptype="IP_ADDR"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG host **********************"
+                echo "host: "${ipValue}
+                uci set system.@system[0].log_ip="${ipValue}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config syslog buffer_size"
+                 help="System log buffer size [KiB]">
+            <PARAM name="buffer_sizeValue"
+                   help="buffer_size"
+                   ptype="UINT"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG  buffer_size **********************"
+                echo "log_size: "${buffer_sizeValue}
+                uci set system.@system[0].log_size="${buffer_sizeValue}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config syslog port"
+                 help="External system log server port default 514">
+            <PARAM name="portValue"
+                   help="system log server port"
+                   ptype="UINT"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG  PORT **********************"
+                echo "syslog server port value: "${portValue}
+                uci set system.@system[0].log_port="${portValue}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config syslog protocol"
+                 help="External system log server protocol">
+            <PARAM name="protocolValue"
+                   help="External system log server protocol"
+                   ptype="PROTO_2"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG  PROTOCOL **********************"
+                echo "syslog server protocol type: "${protocolValue}
+                uci set system.@system[0].log_proto="${protocolValue}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config syslog file"
+                 help="Write system log to file">
+            <PARAM name="filePath"
+                   help="Write system log to file"
+                   ptype="STRING"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG  FILE **********************"
+                echo "syslog file path: "${filePath}
+                uci set system.@system[0].log_file="${filePath}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config syslog output_level"
+                 help="Log output level">
+            <PARAM name="outputlevel"
+                   help="Log output level"
+                   ptype="LOG_LEVEL"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG  OUTPUT LEVEL **********************"
+                echo "syslog output level: "${outputlevel}
+                uci set system.@system[0].conloglevel="${outputlevel}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config syslog cron_level"
+                 help="Cron Log Level">
+            <PARAM name="cronLogLevel"
+                   help="Cron Log Level"
+                   ptype="CRON_LOG_LEVEL"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG  OUTPUT LEVEL **********************"
+                echo "syslog output level: "${cronLogLevel}
+                uci set system.@system[0].cronloglevel="${cronLogLevel}"
+            </ACTION>
+        </COMMAND>
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

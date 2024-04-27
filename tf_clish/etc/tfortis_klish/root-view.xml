@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+ 	<!--=======================================================-->
+    <VIEW name="main"
+    prompt="Switch#">
+
+	<COMMAND name="exit"
+             help="Exit this CLI session">
+        <ACTION builtin="clish_close"/>
+    </COMMAND>
+
+    <COMMAND name="help"
+             help="Help about using the shell">
+		<ACTION builtin="clish_overview"/>
+    </COMMAND>
+	
+	<COMMAND name="show"
+			help="Show information"/>
+			 
+	<COMMAND name="config"
+		help="Configure"/>	 
+	
+	</VIEW>
+ 	<!--=======================================================-->    
+</CLISH_MODULE>

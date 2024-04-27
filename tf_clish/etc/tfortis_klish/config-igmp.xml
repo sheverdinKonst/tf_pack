@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+		
+		<COMMAND name="config igmp_snooping"
+             help="Configure IGMP Snooping">
+        </COMMAND>
+
+            <COMMAND name="config igmp_snooping state"
+                   help="set igmp_snooping state">
+                <PARAM name="stateValue"
+                       help="set state value"
+                       ptype="STATE"/>
+                <ACTION>
+                    /usr/share/lua/tf_klish/igmp/igmp_config.lua "state" "${stateValue}"
+                </ACTION>
+            </COMMAND>
+
+            <COMMAND name="config igmp_snooping max_snooping_table_size"
+                     help="set Maximum snooping table size, 1024 value by default">
+                <PARAM name="table_sizeValue"
+                       help="any positive number 1-1024"
+                       ptype="UINT"/>
+                <ACTION>
+                    /usr/share/lua/tf_klish/igmp/igmp_config.lua "max_snooping_table_size" "${table_sizeValue}"
+                </ACTION>
+            </COMMAND>
+
+            <COMMAND name="config igmp_snooping multicast_querier"
+                     help="state multicast querier">
+                <PARAM name="multicast_querierValue"
+                       help="multicast querier; enable/disable"
+                       ptype="STATE"/>
+                <ACTION>
+                    /usr/share/lua/tf_klish/igmp/igmp_config.lua "multicast_querier" "${multicast_querierValue}"
+                </ACTION>
+            </COMMAND>
+
+            <COMMAND name="config igmp_snooping robustness"
+                     help="The robustness value allows tuning for the expected packet loss on the network.">
+                <PARAM name="robustnessValue"
+                       help="any positive number (2-255 sec)"
+                       ptype="UINT"/>
+                <ACTION>
+                    /usr/share/lua/tf_klish/igmp/igmp_config.lua "robustness" "${robustnessValue}"
+                </ACTION>
+            </COMMAND>
+
+            <COMMAND name="config igmp_snooping query_interval"
+                   help="Interval in centiseconds between multicast general queries">
+                <PARAM name="query_intervalValue"
+                       help="any positive number: (60-600 sec)"
+                       ptype="UINT"/>
+                <ACTION>
+                    /usr/share/lua/tf_klish/igmp/igmp_config.lua "query_interval" "${query_intervalValue}"
+                </ACTION>
+            </COMMAND>
+
+            <COMMAND name="config igmp_snooping query_response_interval"
+                   help="The max response time in centiseconds inserted into the periodic general queries">
+                <PARAM name="response_intervalValue"
+                       help="any positive number (60- 600 sec and less then query interval)"
+                       ptype="UINT"/>
+                <ACTION>
+                    /usr/share/lua/tf_klish/igmp/igmp_config.lua "query_response_interval" "${response_intervalValue}"
+                </ACTION>
+            </COMMAND>
+
+            <COMMAND name="config igmp_snooping last_member_interval"
+                     help="The max response time in centiseconds inserted into group-specific queries sent in response to leave group messages.">
+                <PARAM name="member_intervalValue"
+                       help="any positive number (1-25 sec)"
+                       ptype="UINT"/>
+                <ACTION>
+                    /usr/share/lua/tf_klish/igmp/igmp_config.lua "last_member_interval" "${member_intervalValue}"
+                </ACTION>
+            </COMMAND>
+	</VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

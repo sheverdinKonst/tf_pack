@@ -1,0 +1,25 @@
+{
+  "luci-app-tfortis-poe": {
+    "description": "Grant UCI access to LuCI app tfortis-ups",
+    "read": {
+      "ubus": {
+        "uci": [
+          "get"
+        ]
+      },
+      "uci": [
+        "tfortis-poe"
+      ]
+    },
+    "write": {
+      "ubus": {
+        "uci": [
+          "set", "commit"
+        ]
+      },
+      "uci": [
+        "tfortis-poe"
+      ]
+    }
+  }
+}

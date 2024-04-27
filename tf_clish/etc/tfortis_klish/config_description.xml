@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+http://clish.sourceforge.net/XMLSchema/clish.xsd">
+
+<!--  =======================================================-->
+<VIEW name="main">
+<!--===================================================-->
+
+    <COMMAND name="config description"
+         help="Configure name, Location and Contact"
+         lock="false"
+         interrupt="false">
+    </COMMAND>
+
+    <COMMAND name="config description name"
+         help="Configure camera name"
+         lock="false"
+         interrupt="false">
+
+        <PARAM name="name1" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="name2" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="name3" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="name4" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="name5" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="name6" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="name7" help="" optional="true" ptype="STRING"> </PARAM>
+
+        <ACTION>
+            /etc/tfortis_klish/scripts/description/set_description.sh "description" ${name1} ${name2} ${name3} ${name4} ${name5} ${name6} ${name7]
+        </ACTION>
+    </COMMAND>
+
+    <COMMAND name="config description location"
+         help="Configure camera location"
+         lock="false"
+         interrupt="false">
+
+        <PARAM name="location1" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="location2" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="location3" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="location4" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="location5" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="location6" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="location7" help="" optional="true" ptype="STRING"> </PARAM>
+
+        <ACTION>
+            /etc/tfortis_klish/scripts/description/set_description.sh "location" ${location1} ${location2} ${location3} ${location4} ${location5} ${location6} ${location7}
+        </ACTION>
+    </COMMAND>
+
+    <COMMAND name="config description company"
+         help="Configure company contacts (address, telephone, email)"
+         lock="false"
+         interrupt="false">
+
+        <PARAM name="contact1" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="contact2" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="contact3" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="contact4" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="contact5" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="contact6" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="contact7" help="" optional="true" ptype="STRING"> </PARAM>
+
+        <ACTION>
+            /etc/tfortis_klish/scripts/description/set_description.sh "contact" ${contact1} ${contact2} ${contact3} ${contact4} ${contact5} ${contact6} ${contact7}
+        </ACTION>
+    </COMMAND>
+
+    <COMMAND name="config description notes"
+         help="set any Notes"
+         lock="false"
+         interrupt="false">
+
+        <PARAM name="notes1" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="notes2" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="notes3" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="notes4" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="notes5" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="notes6" help="" optional="true" ptype="STRING"> </PARAM>
+        <PARAM name="notes7" help="" optional="true" ptype="STRING"> </PARAM>
+
+        <ACTION>
+            /etc/tfortis_klish/scripts/description/set_description.sh "notes" ${notes1} ${notes2} ${notes3} ${notes4} ${notes5} ${notes6} ${notes7}
+        </ACTION>
+    </COMMAND>
+</VIEW>
+<!--=======================================================-->
+</CLISH_MODULE>

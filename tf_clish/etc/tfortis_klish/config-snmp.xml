@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+        <COMMAND name="config snmp"
+                 help="Configure SNMP"
+                 lock="false"
+                 interrupt="true">
+
+            <PARAM name="state"
+                   help="set snmp state"
+                   optional="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="stateValue"
+                       help="state value"
+                       ptype="STATE"/>
+            </PARAM>
+
+            <PARAM name="host"
+                   test='-z "${state}"'
+                   help="set host for SNMP Traps"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="hostbool"
+                       help="host ip address"
+                       ptype="SNMP_HOST"/>
+            </PARAM>
+
+            <PARAM name="hostIP"
+                   test='"$hostbool" == "custom"'
+                   help="set host for SNMP Traps"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="hostValue"
+                       help="host ip address"
+                       ptype="IP_ADDR"/>
+            </PARAM>
+
+            <PARAM name="port"
+                   test='-z "${state}" -a -z "${host}"'
+                   help="set port"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="portValue"
+                       help="port SNMP"
+                       ptype="UINT"/>
+            </PARAM>
+
+            <PARAM name="read_community"
+                   test='-z "${host}" -a -z "${state}" -a -z "${port}"'
+                   help="Read Community"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="rcValue"
+                       help="Read community string"
+                       ptype="STRING"/>
+            </PARAM>
+
+            <PARAM name="write_community"
+                   test='-z "${read_community}" -a -z "${host}" -a -z "${state}" -a -z "${port}"'
+                   help="Write Community"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="wcValue"
+                       help="Write community string"
+                       ptype="STRING"/>
+            </PARAM>
+
+            <PARAM name="version"
+                   test='-z "${read_community}" -a -z "${host}" -a -z "${state}" -a -z "${write_community}" -a -z "${port}"hos'
+                   help="SNMP version protocol"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="versionValue"
+                       help="Write community string"
+                       ptype="SNMP_VERSION"/>
+            </PARAM>
+
+            <PARAM name="level"
+                   test=' "${versionValue}" -eq "3"'
+                   help="Security Level for SNMP v.3 only"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="levelValue"
+                       help="Security Level 0,1 or 2"
+                       ptype="SNMP_V3_LEVEL"/>
+            </PARAM>
+
+            <ACTION>
+                echo "************************** SUMMARY CONFIG SNMP **********************"
+
+                if [[  -n "${stateValue}" ]]; then
+                    echo "state"
+                    /etc/tfortis_klish/scripts/snmp/set_snmp_state.sh  ${stateValue}
+                fi
+
+                if [[ "${hostbool}" == "custom" ]] then
+                        echo "TEST 1"
+                elif [[ "${hostbool}" == "localhost" -a  "${hostbool}" == "default" ]] then
+                    echo "TEST 2"
+                fi
+
+                if [[  -n "${hostbool}" ]]; then
+                    echo "host"
+                    #/etc/tfortis_klish/scripts/snmp/set_snmp_state.sh ${hostbool}
+                fi
+
+                if [[  -n "${portValue}" ]]; then
+                    echo "port"
+                    /etc/tfortis_klish/scripts/snmp/set_snmp_port.sh ${portValue}
+                fi
+
+                if [[  -n "${read_community}" ]]; then
+                    echo "read"
+                    /etc/tfortis_klish/scripts/snmp/set_snmp_read_com.sh ${rcValue}
+                fi
+
+                if [[  -n "${write_community}" ]]; then
+                    echo "write"
+                    /etc/tfortis_klish/scripts/snmp/set_snmp_write_com.sh ${wcValue}
+                fi
+
+                if [[  -n "${versionValue}" ]]; then
+                    echo "version"
+                    /etc/tfortis_klish/scripts/snmp/set_snmp_version.sh ${versionValue}
+                fi
+            </ACTION>
+        </COMMAND>
+	</VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

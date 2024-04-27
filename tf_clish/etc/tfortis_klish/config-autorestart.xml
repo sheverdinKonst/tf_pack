@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config autorestart"
+                 help="Configure Autorestart of cameras">
+        </COMMAND>
+
+        <COMMAND name="config autorestart port"
+                 help="port list">
+
+            <PARAM name="portist"
+                   help="set port list"
+                   ptype="PORT_NUM_LIST"/>
+
+            <PARAM name="state"
+                   help="set state: [disable, link, ping, speed, time]"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="stateValue"
+                       help="set aurestart state"
+                       ptype="AUTORESTART_STATE"/>
+            </PARAM>
+
+            <PARAM name="host"
+                   test='-z "${state}"'
+                   help="set camera IP for PING mode"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="ipaddress"
+                       help="set camera IP for PING method"
+                       ptype="IP_ADDR"/>
+            </PARAM>
+
+            <PARAM name="min_speed"
+                   test='-z "${state}" -a -z "${host}"'
+                   help="set min.speed for SPEED mode"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="min_speedValue"
+                       help="set min_speed"
+                       ptype="UINT"/>
+            </PARAM>
+
+            <PARAM name="max_speed"
+                   test='-z "${state}" -a -z "${host}" -a -z "${min_speed}"'
+                   help="set max.speed for SPEED mode"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="max_speedValue"
+                       help="set max speed"
+                       ptype="STRING"/>
+            </PARAM>
+
+            <PARAM name="timeUp"
+                   test='-z "${state}" -a -z "${host}" -a -z "${min_speed}" -a -z "${max_speed}"'
+                   help="set time up for TIME mode"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="timeUpValue"
+                       help="set timeUp in format HH:MM"
+                       ptype="TIME24H"/>
+            </PARAM>
+
+            <PARAM name="timeDown"
+                   test='-z "${state}" -a -z "${host}" -a -z "${min_speed}" -a -z "${max_speed}" -a -z "${timeUP}"'
+                   help="set time down for TIME mode"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="timeDownValue"
+                       help="set time down in format HH:MM"
+                       ptype="TIME24H"/>
+            </PARAM>
+
+            <ACTION>
+                if [[ -n "${state}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/autorestart/config_autorestart.lua ${portList} ${state} ${stateValue}
+                fi
+
+                if [[ -n "${host}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/autorestart/config_autorestart.lua ${portList} ${host} ${ipaddress}
+                fi
+
+                if [[ -n "${min_speed}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/autorestart/config_autorestart.lua ${portList} ${min_speed} ${min_speedValue}
+                fi
+
+                if [[ -n "${max_speed}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/autorestart/config_autorestart.lua ${portList} ${max_speed} ${max_speedValue}
+                fi
+
+                if [[ -n "${timeUp}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/autorestart/config_autorestart.lua ${portList} ${timeUp} ${timeUpValue}
+                fi
+
+                if [[ -n "${timeDown}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/autorestart/config_autorestart.lua ${portList} ${timeDown} ${timeDownValue}
+                fi
+            </ACTION>
+        </COMMAND>
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

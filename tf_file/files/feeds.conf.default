@@ -1,0 +1,4 @@
+src-git packages https://git.openwrt.org/feed/packages.git
+src-git routing https://git.openwrt.org/feed/routing.git
+src-link tfortis_packages /fw_tfortis/openwrt_tfortis_packages
+

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--  =======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config mirroring"
+                 help="Configure Mirroring">
+        </COMMAND>
+
+        <COMMAND name="config mirroring state"
+               help="set state: [enable/disable]">
+            <PARAM name="stateValue"
+                   help="state value"
+                   ptype="STATE"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG MIRRORING **********************"
+                echo "state:        "${stateValue}
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config mirroring ports"
+               help="set port: [start end type]">
+
+            <PARAM name="portStart"
+                   optional="false"
+                   help="port start"
+                   ptype="PORT_NUM_LIST"/>
+    <!--==========
+               <PARAM name="portEnd"
+                      optional="true"
+                      help="port end"
+                      ptype="NUM_1_10"/>
+   ======-->
+               <PARAM name="type"
+                      help="set port type [normal, tx, rx, both]"
+                      optional="false"
+                      mode="subcommand"
+                      ptype="SUBCOMMAND">
+                   <PARAM name="typeValue"
+                          help="set port type [normal, tx, rx, both]"
+                          ptype="PORT_TYPE"/>
+               </PARAM>
+               <ACTION>
+                   echo "************************** SUMMARY CONFIG MIRRORING **********************"
+                   echo "port start:   "${portStart}
+                   echo "port end:     "${portEnd}
+                   echo "type:         "${typeValue}
+               </ACTION>
+
+           </COMMAND>
+
+           <COMMAND name="config mirroring target"
+                  help="set target: [port number]">
+               <PARAM name="targetValue"
+                      help="set target  value"
+                      ptype="NUM_1_10"/>
+               <ACTION>
+                   echo "************************** SUMMARY CONFIG MIRRORING **********************"
+                   echo "targetValue:  "${targetValue}
+               </ACTION>
+           </COMMAND>
+
+       </VIEW>
+       <!--=======================================================-->
+</CLISH_MODULE>

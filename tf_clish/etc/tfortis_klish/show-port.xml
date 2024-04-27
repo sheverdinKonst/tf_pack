@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="show ports"
+                 help="Show PoE information">
+        </COMMAND>
+
+        <COMMAND name="show ports status"
+                 help="Show PoE information">
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/port/show_port_status.lua
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="show ports config"
+                 help="Show PoE information">
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/port/show_port_config.lua
+            </ACTION>
+        </COMMAND>
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

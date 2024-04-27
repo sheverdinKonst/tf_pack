@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--  =======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config save"
+                 help="Apply new configuration"
+                 lock="false"
+                 interrupt="false">
+            <ACTION>
+                echo "Apply configuration"
+                uci commit
+                reload_config
+                #/etc/init.d/system reload
+                #/etc/init.d/network reload
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config changes"
+                 help="Show changes"
+                 lock="false"
+                 interrupt="false">
+            <ACTION>
+                 echo "Changes: "
+                 uci changes
+            </ACTION>
+        </COMMAND>
+
+
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

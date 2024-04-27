@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+		<COMMAND name="config input"
+             help="Configure inputs and sensors">
+		</COMMAND>
+		
+		<COMMAND name="config output"
+             help="Configure outputs">
+		</COMMAND>
+		
+	</VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

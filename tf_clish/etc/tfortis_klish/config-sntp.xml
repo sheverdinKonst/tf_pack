@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config sntp"
+                 help="Configure SNTP">
+        </COMMAND>
+
+        <COMMAND name="config sntp state"
+                 help="enable/disable SNTP">
+            <PARAM name="stateValue"
+                   help="set SNTP state value"
+                   ptype="STATE"/>
+            <ACTION>
+                echo "************************** SUMMARY CONFIG SNTP STATE **********************"
+                echo "state:            " "${stateValue}"
+                uci set system.ntp.enabled="${stateValue}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config sntp add"
+                 help="IP address or hostname">
+
+            <PARAM name="host_name"
+                   help="set host name  or IP address for sntp server"
+                   optional="false"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="hostname"
+                       optional="false"
+                       help="host name"
+                       ptype="STRING"/>
+            </PARAM>
+
+            <ACTION>
+                echo "************************** SUMMARY CONFIG SNTP ADD **********************"
+                /etc/tfortis_klish/scripts/lua/sntpConfig/set_sntp_add.lua ${hostname}
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config sntp delete"
+                 help="IP address or hostname for sntp server">
+
+            <PARAM name="host_name"
+                   help="delete host name for sntp server"
+                   optional="false"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="hostname"
+                       optional="false"
+                       help="host name"
+                       ptype="STRING"/>
+            </PARAM>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/sntpConfig/set_sntp_del.lua ${hostname}
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config sntp timezone"
+                 help="set sntp timezone">
+                <PARAM name="timezoneValue"
+                       help="state value"
+                       ptype="TIMEZONE"/>
+            <ACTION>
+                /etc/tfortis_klish/scripts/lua/sntpConfig/set_sntp_timezone.lua ${timezoneValue}
+            </ACTION>
+        </COMMAND>
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>
+

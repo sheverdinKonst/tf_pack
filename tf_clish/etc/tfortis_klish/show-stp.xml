@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+		<COMMAND name="show stp"
+             help="Show Spanning Tree information">
+
+            <PARAM name="config"
+                   help="show STP config"
+                   optional="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="bridge"
+                       help="choose port range"
+                       optional="true"
+                       order="true"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND"/>
+                <PARAM name="ports"
+                       test='-z "${bridge}"'
+                       help="choose port range"
+                       optional="true"
+                       order="true"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND"/>
+                <PARAM name="portValue"
+                       test = '-n "${ports}"'
+                       optional="true"
+                       order="true"
+                       help="sport value - range: 1-10 or only one: 2"
+                       ptype="PORT_NUM_LIST"/>
+            </PARAM>
+
+            <PARAM name="status"
+                   test='-z "${config}"'
+                   help="show lldp remote port"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="bridge"
+                       help="choose port range"
+                       optional="true"
+                       order="true"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND"/>
+                <PARAM name="ports"
+                       test='-z "${bridge}"'
+                       help="choose port range"
+                       optional="true"
+                       order="true"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND"/>
+                <PARAM name="portValue"
+                       test = '-n "${ports}"'
+                       optional="true"
+                       order="true"
+                       help="sport value - range: 1-10 or only one: 2"
+                       ptype="PORT_NUM_LIST"/>
+            </PARAM>
+
+            <ACTION>
+                if [[  -n "${config}" ]]; then
+                    echo "show mstpd config"
+                    if [[  -n "${bridge}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/stp/stp_show_config.lua "${bridge}" "switch"
+                    fi
+
+                    if [[  -n "${ports}" ]]; then
+                        echo "show mstpd config ports all"
+                        if [[  -z "${portValue}" ]]; then
+                            /etc/tfortis_klish/scripts/lua/stp/stp_show_config.lua "${ports}" "all"
+                        fi
+
+                        if [[  -n "${portValue}" ]]; then
+                            echo "show mstpd status ports range"
+                            /etc/tfortis_klish/scripts/lua/stp/stp_show_config.lua "${ports}" "${portValue}"
+                        fi
+                    fi
+                fi
+
+                if [[  -n "${status}" ]]; then
+                    if [[  -n "${bridge}" ]]; then
+                        echo "show mstpd status bridge"
+                        /etc/tfortis_klish/scripts/lua/stp/stp_show_status.lua "${bridge}" "switch"
+                    fi
+
+                    if [[  -n "${ports}" ]]; then
+                        echo "show mstpd status ports all"
+                        if [[  -z "${portValue}" ]]; then
+                            /etc/tfortis_klish/scripts/lua/stp/stp_show_status.lua "${ports}" "all"
+                        fi
+
+                        if [[  -n "${portValue}" ]]; then
+                            echo "show mstpd status ports range"
+                            /etc/tfortis_klish/scripts/lua/stp/stp_show_status.lua "${ports}" "${portValue}"
+                        fi
+                    fi
+                fi
+            </ACTION>
+        </COMMAND>
+	</VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

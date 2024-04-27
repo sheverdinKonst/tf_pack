@@ -1,0 +1,185 @@
+#!/usr/bin/env lua
+local json = require "luci.jsonc"
+local util = require "luci.util"
+local fs = require "nixio.fs"
+
+sfp_present = {}
+sfp_los = {}
+sfp_vendor = {}
+sfp_vendor_oui = {}
+sfp_vendor_pn = {}
+sfp_vendor_rev = {}
+sfp_identifier = {}
+sfp_connector = {}
+sfp_type = {}
+sfp_link_len = {}
+sfp_fiber_tec = {}
+sfp_media = {}
+sfp_speed = {}
+sfp_encoding = {}
+sfp_wavelen = {}
+sfp_nbr = {}
+sfp_len9 = {}
+sfp_len50 = {}
+sfp_len62 = {}
+sfp_lenc = {}
+sfp_temper = {}
+sfp_voltage = {}
+sfp_tx_bias = {}
+sfp_tx_power = {}
+sfp_rx_power = {}
+
+sfp_present[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_PRESENT get")
+sfp_present[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_PRESENT get")	
+sfp_los[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_LOS get")	
+sfp_los[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_LOS get")	
+sfp_vendor[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_VENDOR get")	
+sfp_vendor[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_VENDOR get")	
+sfp_vendor_oui[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_VENDOR_OUI get")	
+sfp_vendor_oui[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_VENDOR_OUI get")	
+sfp_vendor_pn[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_VENDOR_PN get")
+sfp_vendor_pn[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_VENDOR_PN get")
+sfp_vendor_rev[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_VENDOR_REV get")
+sfp_vendor_rev[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_VENDOR_REV get")	
+sfp_identifier[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_IDENTIFIER get")	
+sfp_identifier[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_IDENTIFIER get")	
+sfp_connector[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_CONNECTOR get")	
+sfp_connector[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_CONNECTOR get")
+sfp_type[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_TYPE get")
+sfp_type[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_TYPE get")		
+sfp_link_len[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_LINK_LEN get")	
+sfp_link_len[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_LINK_LEN get")	
+sfp_fiber_tec[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_FIBER_TEC get")	
+sfp_fiber_tec[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_FIBER_TEC get")	
+sfp_media[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_MEDIA get")
+sfp_media[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_MEDIA get")	
+sfp_speed[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_SPEED get")	
+sfp_speed[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_SPEED get")	
+sfp_encoding[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_ENCODING get")	
+sfp_encoding[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_ENCODING get")
+sfp_wavelen[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_WAVELEN get")
+sfp_wavelen[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_WAVELEN get")		
+sfp_nbr[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_NBR get")	
+sfp_nbr[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_NBR get")
+sfp_len9[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_LEN9 get")	
+sfp_len9[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_LEN9 get")	
+sfp_len50[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_LEN50 get")
+sfp_len50[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_LEN50 get")
+sfp_len62[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_LEN62 get")
+sfp_len62[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_LEN62 get")
+sfp_lenc[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_LENC get")
+sfp_lenc[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_LENC get")
+sfp_temper[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_TEMPER get")	
+sfp_temper[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_TEMPER get")	
+sfp_voltage[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_VOLTAGE get")
+sfp_voltage[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_VOLTAGE get")	
+sfp_tx_bias[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_TX_BIAS get")	
+sfp_tx_bias[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_TX_BIAS get")	
+sfp_tx_power[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_TX_POWER get")
+sfp_tx_power[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_TX_POWER get")
+sfp_rx_power[0] = luci.util.exec("/usr/bin/hwsys_ctrl SFP1_RX_POWER get")	
+sfp_rx_power[1] = luci.util.exec("/usr/bin/hwsys_ctrl SFP2_RX_POWER get")	
+
+
+
+local methods = {
+	getStatus = {
+		args = { sfp="string" },
+		call = function(args)
+			sfp = {}
+			for i=0, 1 do
+				sfp[i] =  json.parse('{"present": "'..sfp_present[i]..'",'..
+						'"los": "'..sfp_los[i]..'",'..
+						'"vendor": "'..sfp_vendor[i]..'",'..
+						'"vendor_oui": "'..sfp_vendor_oui[i]..'",'..
+						'"vendor_pn": "'..sfp_vendor_pn[i]..'",'..
+						'"vendor_rev": "'..sfp_vendor_rev[i]..'",'..
+					    '"identifier": "'..sfp_identifier[i]..'",'..
+						'"connector": "'..sfp_connector[i]..'",'..					
+						'"type": "'..sfp_type[i]..'",'..
+						'"link_len": "'..sfp_link_len[i]..'",'..
+						'"fiber_tec": "'..sfp_fiber_tec[i]..'",'..
+						'"media": "'..sfp_media[i]..'",'..
+						'"speed": "'..sfp_speed[i]..'",'..
+						'"encoding": "'..sfp_encoding[i]..'",'..
+						'"wavelen": "'..sfp_wavelen[i]..'",'..
+						'"nbr": "'..sfp_nbr[i]..'",'..
+						'"len9": "'..sfp_len9[i]..'",'..
+						'"len50": "'..sfp_len50[i]..'",'..
+						'"len62": "'..sfp_len62[i]..'",'..
+						'"lenc": "'..sfp_lenc[i]..'",'..					
+						'"temper": "'..sfp_temper[i]..'",'..
+						'"voltage": "'..sfp_voltage[i]..'",'..
+						'"tx_bias": "'..sfp_tx_bias[i]..'",'..
+						'"tx_power": "'..sfp_tx_power[i]..'",'..
+						'"rx_power": "'..sfp_rx_power[i]..'"'..
+		     		'}')			
+			end
+			
+			return {
+				sfp = sfp			
+			}						
+		end
+	}
+}
+
+local function parseInput()
+	local parse = json.new()
+	local done, err
+
+	while true do
+		local chunk = io.read(4096)
+		if not chunk then
+			break
+		elseif not done and not err then
+			done, err = parse:parse(chunk)
+		end
+	end
+
+	if not done then
+		print(json.stringify({ error = err or "Incomplete input" }))
+		os.exit(1)
+	end
+
+	return parse:get()
+end
+
+local function validateArgs(func, uargs)
+	local method = methods[func]
+	if not method then
+		print(json.stringify({ error = "Method not found" }))
+		os.exit(1)
+	end
+
+	if type(uargs) ~= "table" then
+		print(json.stringify({ error = "Invalid arguments" }))
+		os.exit(1)
+	end
+
+	uargs.ubus_rpc_session = nil
+
+	local k, v
+	local margs = method.args or {}
+	for k, v in pairs(uargs) do
+		if margs[k] == nil or
+		   (v ~= nil and type(v) ~= type(margs[k]))
+		then
+			print(json.stringify({ error = "Invalid arguments" }))
+			os.exit(1)
+		end
+	end
+
+	return method
+end
+
+if arg[1] == "list" then
+	local _, method, rv = nil, nil, {}
+	for _, method in pairs(methods) do rv[_] = method.args or {} end
+	print((json.stringify(rv):gsub(":%[%]", ":{}")))
+elseif arg[1] == "call" then
+	local args = parseInput()
+	local method = validateArgs(arg[2], args)
+	local result, code = method.call(args)
+	print((json.stringify(result):gsub("^%[%]$", "{}")))
+	os.exit(code or 0)
+end

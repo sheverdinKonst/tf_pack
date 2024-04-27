@@ -1,0 +1,155 @@
+<%
+	local util = require "luci.util"
+	local fs = require "nixio.fs"
+	local sys = require "luci.sys"
+	local http = require "luci.http"
+	local dispatcher = require "luci.dispatcher"
+	local uci = require "luci.model.uci".cursor()
+	
+	local sfp1_present = luci.util.exec("hwsys_ctrl SFP1_PRESENT get")	
+	local sfp1_los = luci.util.exec("hwsys_ctrl SFP1_LOS get")
+	local sfp1_vendor = luci.util.exec("hwsys_ctrl SFP1_VENDOR get")	
+	local sfp1_vendor_oui = luci.util.exec("hwsys_ctrl SFP1_VENDOR_OUI get")	
+	local sfp1_vendor_pn = luci.util.exec("hwsys_ctrl SFP1_VENDOR_PN get")	
+	local sfp1_vendor_rev = luci.util.exec("hwsys_ctrl SFP1_VENDOR_REV get")	
+	local sfp1_identifier = luci.util.exec("hwsys_ctrl SFP1_IDENTIFIER get")		
+	local sfp1_connector = luci.util.exec("hwsys_ctrl SFP1_CONNECTOR get")	
+	local sfp1_type = luci.util.exec("hwsys_ctrl SFP1_TYPE get")	
+	local sfp1_link_len = luci.util.exec("hwsys_ctrl SFP1_LINK_LEN get")
+	local sfp1_fiber_tec = luci.util.exec("hwsys_ctrl SFP1_FIBER_TEC get")
+	local sfp1_media = luci.util.exec("hwsys_ctrl SFP1_MEDIA get")
+	local sfp1_speed = luci.util.exec("hwsys_ctrl SFP1_SPEED get")
+	local sfp1_encoding = luci.util.exec("hwsys_ctrl SFP1_ENCODING get")
+	local sfp1_wavelen = luci.util.exec("hwsys_ctrl SFP1_WAVELEN get")
+	local sfp1_nbr = luci.util.exec("hwsys_ctrl SFP1_NBR get")
+	local sfp1_len9 = luci.util.exec("hwsys_ctrl SFP1_LEN9 get")
+	local sfp1_len50 = luci.util.exec("hwsys_ctrl SFP1_LEN50 get")
+	local sfp1_len62 = luci.util.exec("hwsys_ctrl SFP1_LEN62 get")
+	local sfp1_lenc = luci.util.exec("hwsys_ctrl SFP1_LENC get")	
+	local sfp1_temper = luci.util.exec("hwsys_ctrl SFP1_TEMPER get")	
+	local sfp1_voltage = luci.util.exec("hwsys_ctrl SFP1_VOLTAGE get")	
+	local sfp1_tx_bias = luci.util.exec("hwsys_ctrl SFP1_TX_BIAS get")	
+	local sfp1_tx_power = luci.util.exec("hwsys_ctrl SFP1_TX_POWER get")
+	local sfp1_rx_power = luci.util.exec("hwsys_ctrl SFP1_RX_POWER get")
+	
+
+	local sfp2_present = luci.util.exec("hwsys_ctrl SFP2_PRESENT get")	
+	local sfp2_los = luci.util.exec("hwsys_ctrl SFP2_LOS get")
+	local sfp2_vendor = luci.util.exec("hwsys_ctrl SFP2_VENDOR get")	
+	local sfp2_vendor_oui = luci.util.exec("hwsys_ctrl SFP2_VENDOR_OUI get")	
+	local sfp2_vendor_pn = luci.util.exec("hwsys_ctrl SFP2_VENDOR_PN get")	
+	local sfp2_vendor_rev = luci.util.exec("hwsys_ctrl SFP2_VENDOR_REV get")	
+	local sfp2_identifier = luci.util.exec("hwsys_ctrl SFP2_IDENTIFIER get")		
+	local sfp2_connector = luci.util.exec("hwsys_ctrl SFP2_CONNECTOR get")	
+	local sfp2_type = luci.util.exec("hwsys_ctrl SFP2_TYPE get")	
+	local sfp2_link_len = luci.util.exec("hwsys_ctrl SFP2_LINK_LEN get")
+	local sfp2_fiber_tec = luci.util.exec("hwsys_ctrl SFP2_FIBER_TEC get")
+	local sfp2_media = luci.util.exec("hwsys_ctrl SFP2_MEDIA get")
+	local sfp2_speed = luci.util.exec("hwsys_ctrl SFP2_SPEED get")
+	local sfp2_encoding = luci.util.exec("hwsys_ctrl SFP2_ENCODING get")
+	local sfp2_wavelen = luci.util.exec("hwsys_ctrl SFP2_WAVELEN get")
+	local sfp2_nbr = luci.util.exec("hwsys_ctrl SFP2_NBR get")
+	local sfp2_len9 = luci.util.exec("hwsys_ctrl SFP2_LEN9 get")
+	local sfp2_len50 = luci.util.exec("hwsys_ctrl SFP2_LEN50 get")
+	local sfp2_len62 = luci.util.exec("hwsys_ctrl SFP2_LEN62 get")
+	local sfp2_lenc = luci.util.exec("hwsys_ctrl SFP2_LENC get")	
+	local sfp2_temper = luci.util.exec("hwsys_ctrl SFP2_TEMPER get")	
+	local sfp2_voltage = luci.util.exec("hwsys_ctrl SFP2_VOLTAGE get")	
+	local sfp2_tx_bias = luci.util.exec("hwsys_ctrl SFP2_TX_BIAS get")	
+	local sfp2_tx_power = luci.util.exec("hwsys_ctrl SFP2_TX_POWER get")
+	local sfp2_rx_power = luci.util.exec("hwsys_ctrl SFP2_RX_POWER get")
+	
+-%>
+
+<%+header%>
+
+<style>
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border-bottom: 1px solid var(--border-color-medium);
+  font-size: 12px;
+  padding: 10px;
+  text-align: justify;
+  display: table-cell;
+  vertical-align: top;
+}
+
+td input[type="checkbox"] {
+    float: left;
+    margin: 0 auto;
+    width: 40%;
+}
+
+tr:nth-child(odd) {background-color: var(--background-color-medium)}
+
+</style>
+
+	<div class="cbi-map-descr"><%:Statistics of SFP%> .</div>
+	
+	<h2><%:SFP1%></h2>
+	
+	<p></p>
+	<div class="table" width="100%">
+	<div class="tr"><div class="td left" width="33%"><%:Present%>:</div><div class="td left"><%=sfp1_present%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:LOS%>:</div><div class="td left"><%=sfp1_los%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Vendor%>:</div><div class="td left"><%=sfp1_vendor%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Vendor OUI%>:</div><div class="td left"><%=sfp1_vendor_oui%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Vendor PN%>:</div><div class="td left"><%=sfp1_vendor_pn%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Vendor rev%>:</div><div class="td left"><%=sfp1_vendor_rev%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Identefire%>:</div><div class="td left"><%=sfp1_identifier%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Connector%>:</div><div class="td left"><%=sfp1_connector%></div></div>	
+	<div class="tr"><div class="td left" width="33%"><%:Type%>:</div><div class="td left"><%=sfp1_type%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Link Length%>:</div><div class="td left"><%=sfp1_link_len%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Fiber Tech%>:</div><div class="td left"><%=sfp1_fiber_tec%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Media%>:</div><div class="td left"><%=sfp1_media%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Speed%>:</div><div class="td left"><%=sfp1_speed%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Encoding%>:</div><div class="td left"><%=sfp1_encoding%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Wavelength%>:</div><div class="td left"><%=sfp1_wavelen%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:NBR%>:</div><div class="td left"><%=sfp1_nbr%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:LEN 9%>:</div><div class="td left"><%=sfp1_len9%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Len 50%>:</div><div class="td left"><%=sfp1_len50%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Len 62%>:</div><div class="td left"><%=sfp1_len62%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Len Cooper%>:</div><div class="td left"><%=sfp1_lenc%></div></div>	
+	<div class="tr"><div class="td left" width="33%"><%:Temper%>:</div><div class="td left"><%=sfp1_temper%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Voltage%>:</div><div class="td left"><%=sfp1_voltage%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:TX bias%>:</div><div class="td left"><%=sfp1_tx_bias%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:TX power%>:</div><div class="td left"><%=sfp1_tx_power%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:RX power%>:</div><div class="td left"><%=sfp1_rx_power%></div></div> 
+	</div>
+	
+	<h2><%:SFP2%></h2>
+	<p></p>
+	<div class="table" width="100%">
+	<div class="tr"><div class="td left" width="33%"><%:Present%>:</div><div class="td left"><%=sfp2_present%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:LOS%>:</div><div class="td left"><%=sfp2_los%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Vendor%>:</div><div class="td left"><%=sfp2_vendor%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Vendor OUI%>:</div><div class="td left"><%=sfp2_vendor_oui%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Vendor PN%>:</div><div class="td left"><%=sfp2_vendor_pn%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Vendor rev%>:</div><div class="td left"><%=sfp2_vendor_rev%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Identefire%>:</div><div class="td left"><%=sfp2_identifier%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Connector%>:</div><div class="td left"><%=sfp2_connector%></div></div>	
+	<div class="tr"><div class="td left" width="33%"><%:Type%>:</div><div class="td left"><%=sfp2_type%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Link Length%>:</div><div class="td left"><%=sfp2_link_len%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Fiber Tech%>:</div><div class="td left"><%=sfp2_fiber_tec%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Media%>:</div><div class="td left"><%=sfp2_media%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Speed%>:</div><div class="td left"><%=sfp2_speed%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Encoding%>:</div><div class="td left"><%=sfp2_encoding%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Wavelength%>:</div><div class="td left"><%=sfp2_wavelen%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:NBR%>:</div><div class="td left"><%=sfp2_nbr%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:LEN 9%>:</div><div class="td left"><%=sfp2_len9%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Len 50%>:</div><div class="td left"><%=sfp2_len50%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Len 62%>:</div><div class="td left"><%=sfp2_len62%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Len Cooper%>:</div><div class="td left"><%=sfp2_lenc%></div></div>	
+	<div class="tr"><div class="td left" width="33%"><%:Temper%>:</div><div class="td left"><%=sfp2_temper%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:Voltage%>:</div><div class="td left"><%=sfp2_voltage%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:TX bias%>:</div><div class="td left"><%=sfp2_tx_bias%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:TX power%>:</div><div class="td left"><%=sfp2_tx_power%></div></div>
+	<div class="tr"><div class="td left" width="33%"><%:RX power%>:</div><div class="td left"><%=sfp2_rx_power%></div></div> 
+	</div>	
+<%+footer%>

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+touch /etc/config/tfortis-ups
+uci set tfortis-ups.first=first
+uci set tfortis-ups.second=second
+uci commit
+
+return 0

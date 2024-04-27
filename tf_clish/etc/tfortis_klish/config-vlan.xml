@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+		
+		<COMMAND name="config vlan"
+             help="Configure VLAN">
+		</COMMAND>
+
+        <COMMAND name="config vlan vlanid"
+                 help="config Vlan">
+
+            <PARAM name="vlanidValue"
+                   help="vlan id Value"
+                   optional="false"
+                   ptype="VLAN_ID_LIST"/>
+
+                    <PARAM name="add"
+                        help="add new Vlan or add new Port to specified Vlan. Arguments: (1)-Tagget type (2)-Port list"
+                        optional="true"
+                        order="true"
+                        mode="subcommand"
+                        ptype="SUBCOMMAND">
+                        <PARAM name="taggedType"
+                            help="vlan tagged type"
+                            ptype="VLAN_TAGGED_TYPE_ADD"/>
+                        <PARAM name="vlanPortListValue"
+                            help="vlan port list"
+                            ptype="PORT_NUM_LIST"/>
+                    </PARAM>
+
+                    <PARAM name="edit"
+                       help="add new Vlan or add new Port to specified Vlan. Arguments: (1)-Tagget type, not member; (2)-Port list"
+                       optional="true"
+                       order="true"
+                       mode="subcommand"
+                       ptype="SUBCOMMAND">
+                        <PARAM name="taggedType"
+                           help="vlan tagged type"
+                           ptype="VLAN_TAGGED_TYPE_EDIT"/>
+                        <PARAM name="vlanPortListValue"
+                           help="vlan port list"
+                           ptype="PORT_NUM_LIST"/>
+                    </PARAM>
+
+                    <PARAM name="name"
+                        test='-z "${add}"'
+                        help="set vlan name"
+                        optional="true"
+                        order="true"
+                        mode="subcommand"
+                        ptype="SUBCOMMAND">
+                        <PARAM name="vlanNameValue"
+                            help="set vlan name"
+                            ptype="STRING"/>
+                    </PARAM>
+
+                    <PARAM name="state"
+                         test='-z "${add}" -a -z "${name}"'
+                         help="set vlan state"
+                         optional="true"
+                         order="true"
+                         mode="subcommand"
+                         ptype="SUBCOMMAND">
+                          <PARAM name="vlanStateValue"
+                                 help="set vlan State"
+                                 ptype="STATE_DE"/>
+                    </PARAM>
+
+                    <PARAM name="delete"
+                          test='-z "${add}" -a -z "${name}" -a -z "${state}"'
+                          help="set Port state"
+                          optional="true"
+                          order="true"
+                          mode="subcommand"
+                          ptype="SUBCOMMAND">
+                    </PARAM>
+
+                  <ACTION>
+                     echo "**************************  CONFIG " ${add} ${taggedType} " VLAN **********************"
+                      if [[ -n "${add}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/vlan/config_vlan.lua ${vlanidValue} ${add} ${taggedType} ${vlanPortListValue}
+                      fi
+
+                      if [[ -n "${edit}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/vlan/config_vlan.lua ${vlanidValue} ${edit} ${taggedType} ${vlanPortListValue}
+                      fi
+
+                      if [[ -n "${delete}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/vlan/config_vlan.lua ${vlanidValue} ${delete} "" 0-0
+                      fi
+
+                      if [[ -n "${name}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/vlan/config_vlan.lua ${vlanidValue} ${name} ${vlanNameValue} 0-0
+                      fi
+
+                      if [[ -n "${state}" ]]; then
+                        /etc/tfortis_klish/scripts/lua/vlan/config_vlan.lua ${vlanidValue} ${state} ${vlanStateValue} 0-0
+                      fi
+                  </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config vlan mngt_vlan"
+                   help="IP address syslog server">
+              <PARAM name="vlanidValue"
+                     help="vlan Value "
+                     ptype="VLAN_ID"/>
+            <ACTION>
+                echo "**************************  CONFIG  mngt_vlan  ${vlanidValue} **********************"
+
+                if [[ -n "${vlanidValue}" ]]; then
+                    /etc/tfortis_klish/scripts/lua/vlan/config_vlan.lua ${vlanidValue} "mngt_vlan" "" 0-0
+                fi
+            </ACTION>
+        </COMMAND>
+    </VIEW>
+          <!--=======================================================-->
+</CLISH_MODULE>

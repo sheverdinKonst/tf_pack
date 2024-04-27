@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--  =======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config user_account"
+                 help="Add/delete user, set password and Access level"
+                 lock="false"
+                 interrupt="true">
+        </COMMAND>
+
+        <COMMAND name="config user_account add"
+                 help="Add user, set password and access level"
+                 lock="false"
+                 interrupt="true">
+            <PARAM name="user_name"
+                   help="set user name"
+                   optional="false"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="username"
+                       help="user name"
+                       ptype="STRING"/>
+            </PARAM>
+
+            <PARAM name="admin_rule"
+                   help="set Access level"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="adminruleValue"
+                       help="admin rule Value"
+                       ptype="ADMIN_RULE"/>
+            </PARAM>
+
+            <ACTION>
+                echo "************************** SUMMARY CONFIG USER ACCOUNT ADD **********************"
+                /etc/tfortis_klish/scripts/user_account/set_useraccount_add.sh  "${username}" "${adminruleValue}"
+            </ACTION>
+        </COMMAND>
+
+        <COMMAND name="config user_account delete"
+                 help="Delete user"
+                 lock="false"
+                 interrupt="false">
+
+            <PARAM name="user_name"
+                   help="set user name"
+                   optional="false"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="username"
+                       help="user name"
+                       ptype="STRING"/>
+            </PARAM>
+
+            <ACTION>
+                echo "************************** SUMMARY CONFIG USER ACCOUNT DELETE **********************"
+                /etc/tfortis_klish/scripts/user_account/set_useraccount_delete.sh "${username}"
+            </ACTION>
+
+        </COMMAND>
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

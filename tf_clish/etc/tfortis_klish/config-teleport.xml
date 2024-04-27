@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CLISH_MODULE xmlns="http://clish.sourceforge.net/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://clish.sourceforge.net/XMLSchema
+                     http://clish.sourceforge.net/XMLSchema/clish.xsd">
+    <!--=======================================================-->
+    <VIEW name="main">
+        <!--===================================================-->
+
+        <COMMAND name="config teleport"
+                 help="Configure inputs/events translation">
+        </COMMAND>
+
+        <COMMAND name="config teleport input"
+                 help="Configure inputstranslation">
+
+            <PARAM name="inputValue"
+                   help="input value"
+                   ptype="TELEPORT_INPUT">
+            </PARAM>
+
+            <PARAM name="input_state"
+                   value="state"
+                   help="set Port state"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="stateValue"
+                       help="state value"
+                       ptype="STATE"/>
+            </PARAM>
+
+            <PARAM name="input_remdev"
+                   test='-z "${input_state}"'
+                   value="remdev"
+                   help="Remote IP address"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="ipaddress"
+                       help="ip address"
+                       ptype="IP_ADDR"/>
+            </PARAM>
+
+            <PARAM name="input_remport"
+                   test='-z "${input_state}" -a -z "${input_remdev}"'
+                   value="remport"
+                   help="set Port number"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                   <PARAM name="remportValue"
+                       help="port number"
+                       ptype="UINT"/>
+            </PARAM>
+
+            <PARAM name="input_inverse"
+                   test='-z "${input_state}" -a -z "${input_remdev}" -a -z "${input_remport}"'
+                   value="inverse"
+                   help="inverse output on remote device"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="inverseValue"
+                       help="enable/disable inversion"
+                       ptype="STATE"/>
+            </PARAM>
+
+        </COMMAND>
+
+        <COMMAND name="config teleport event"
+                 help="Configure events translation">
+
+            <PARAM name="eventValue"
+                   help="event value"
+                   ptype="TELEPORT_EVENT">
+            </PARAM>
+
+            <PARAM name="event_state"
+                   value="state"
+                   help="set Port state"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="stateValue"
+                       help="state value"
+                       ptype="STATE"/>
+            </PARAM>
+
+            <PARAM name="event_remdev"
+                   test='-z "${event_state}"'
+                   value="remdev"
+                   help="Remote IP address"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="ipaddress"
+                       help="ip address"
+                       ptype="IP_ADDR"/>
+            </PARAM>
+
+            <PARAM name="event_remport"
+                   test='-z "${event_state}" -a -z "${event_remdev}"'
+                   value="remport"
+                   help="set Port number"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="remportValue"
+                       help="port number"
+                       ptype="UINT"/>
+            </PARAM>
+
+            <PARAM name="event_inverse"
+                   test='-z "${event_state}" -a -z "${event_remdev}" -a -z "${event_remport}"'
+                   value="inverse"
+                   help="inverse output on remote device"
+                   optional="true"
+                   order="true"
+                   mode="subcommand"
+                   ptype="SUBCOMMAND">
+                <PARAM name="inverseValue"
+                       help="enable/disable inversion"
+                       ptype="STATE"/>
+            </PARAM>
+        </COMMAND>
+
+        <COMMAND name="config teleport remdev"
+                 help="Configure remote device">
+        </COMMAND>
+
+        <COMMAND name="config teleport remdev add"
+                 help="Configure remote device">
+            <PARAM name="addipaddress"
+                   help="add remote device"
+                   ptype="IP_ADDR"/>
+        </COMMAND>
+
+        <COMMAND name="config teleport remdev delete"
+                 help="Configure remote device">
+            <PARAM name="delipaddress"
+                   help="delete remote device"
+                   ptype="IP_ADDR"/>
+        </COMMAND>
+
+    </VIEW>
+    <!--=======================================================-->
+</CLISH_MODULE>

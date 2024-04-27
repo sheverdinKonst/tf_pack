@@ -1,0 +1,14 @@
+config input 'tamper'
+	option alarm_state 'open'
+
+config input 'sensor1'
+	option state '1'
+	option alarm_state 'short'
+
+config input 'sensor2'
+	option state '1'
+	option alarm_state 'short'
+
+config output 'relay'
+	option state 'open'
+
