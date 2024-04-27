@@ -25,3 +25,4 @@
 /tf_autorestart/src/cmake-build-debug/cmake_install.cmake
 /.idea/.name
 /tf_autorestart/src/cmake-build-debug/
+/.idea/tf_pack.iml
